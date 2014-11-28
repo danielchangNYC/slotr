@@ -14,10 +14,6 @@ When Sally has lots of meetings out for coordination, Sally wants to know what s
 Inlude people on the interview, including self
 At the head of each morning, Sally gets a summary e-mail showing her what meetings are being coordinated.
 
-
-// What calendar application does Sally use? Gcal? iCal?
-// Does Slotr only deal with interviews?
-
 USERS
 has_one :profile  (No profile = not a scheduler)
 has_many :user_contacts
@@ -68,8 +64,6 @@ belongs_to :interview
 belongs_to :user
 code
 responded_on
-
-
 
 // How does responding to the scheduler work?
 www.slotr.com/schedule_responses/SDIUHFWEFOIJA23090KLSD
