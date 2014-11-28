@@ -1,0 +1,20 @@
+development:
+  adapter: postgresql
+  database: slotr_development
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+
+test:
+  adapter: postgresql
+  database: slotr_test
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+
+staging:
+  adapter: postgresql
+  database: slotr_staging
+  pool: 5
+  timeout: 5000
+  encoding: unicode
