@@ -44,18 +44,23 @@ user_id
 
 INTERVIEWS
 has_many :interviewers, through: :interview_interviewers, class_name: "User"
-has_many :rejected_dates
+has_many :rejected_datetimes
+has_many :preferred_dates`
 belongs_to :scheduler, class_name: "User" (the user who created it)
   # scheduler_id
 belongs_to :interviewee, class_name: "User"
   # interviewee_id
-preferred_date_top
-preferred_date_middle
-preferred_date_bottom
+preferred_datetime_top
+preferred_datetime_middle
+preferred_datetime_bottom
 begins_at
 ends_at
 
-REJECTED_DATES
+REJECTED_DATETIMES
+belongs_to :interview
+datetime
+
+PREFERRED_DATES
 belongs_to :interview
 datetime
 
