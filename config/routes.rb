@@ -5,5 +5,7 @@ Rails.application.routes.draw do
     root :to => 'devise/sessions#new'
   end
 
-  resources :interviews, only: [:index, :new, :create]
+  resources :interviews, only: [:index, :new, :create, :edit, :update]
+
+  resources :possible_interview_dates, only: [:destroy]
 end

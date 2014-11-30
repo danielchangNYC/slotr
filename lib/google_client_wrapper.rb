@@ -2,7 +2,7 @@ class GoogleClientWrapper
   attr_accessor :client, :service, :calendar_id
 
   def self.get_possible_dates_for(user)
-    new(token, user_email).get_possible_dates
+    new(user.token, user.email).get_possible_dates
   end
 
   def initialize(token, user_email)
@@ -17,9 +17,12 @@ class GoogleClientWrapper
   end
 
   def get_upcoming_events
+    # the reject statement will ignore all-day events
     formatted_upcoming_events.map do |event|
       { start_time: Chronic.parse(event["start"]["dateTime"]),
         end_time: Chronic.parse(event["end"]["dateTime"])}
+    end.reject do |event|
+      event[:start_time].nil? || event[:end_time].nil?
     end
   end
 

@@ -1,0 +1,9 @@
+h1 Edit Interview for #{@interview.interviewee.email}
+
+ul
+  - @date_recommendations.each do |date|
+    li
+      .fa.fa-bars
+      span = "#{date.start_time} to #{date.end_time}"
+      = button_to possible_interview_date_path(date), method: :delete do
+        .fa.fa-times-circle

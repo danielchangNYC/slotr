@@ -5,10 +5,17 @@ class InterviewsController < ApplicationController
 
   def new
     @interview = Interview.new(scheduler_id: current_user.id)
-    @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user, @interview)
+  end
+
+  def edit
+    @interview = Interview.find(params[:id])
+    @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user)
   end
 
   def create
+  end
+
+  def update
   end
 end
 
