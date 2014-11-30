@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141128221622) do
+ActiveRecord::Schema.define(version: 20141130021909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "interviews", force: true do |t|
+    t.integer  "scheduler_id"
+    t.integer  "interviewee_id"
+    t.datetime "preferred_datetime_top"
+    t.datetime "preferred_datetime_middle"
+    t.datetime "preferred_datetime_bottom"
+    t.datetime "begins_at"
+    t.datetime "ends_at"
+  end
+
+  add_index "interviews", ["interviewee_id"], name: "index_interviews_on_interviewee_id", using: :btree
+  add_index "interviews", ["scheduler_id"], name: "index_interviews_on_scheduler_id", using: :btree
 
   create_table "profiles", force: true do |t|
     t.integer "user_id"

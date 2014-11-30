@@ -44,7 +44,7 @@ user_id
 INTERVIEWS
 has_many :interviewers, through: :interview_interviewers, class_name: "User"
 has_many :rejected_datetimes
-has_many :preferred_dates`
+has_many :preferred_dates
 belongs_to :scheduler, class_name: "User" (the user who created it)
   # scheduler_id
 belongs_to :interviewee, class_name: "User"
