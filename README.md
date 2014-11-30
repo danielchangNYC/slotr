@@ -23,7 +23,6 @@ first_name
 last_name
 
 PROFILES
-// google_uid  ====> WHERE DOES THIS BELONG?
 preferred_begins_at
 preferred_ends_at
 prefer_mon?
