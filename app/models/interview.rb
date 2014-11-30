@@ -4,4 +4,6 @@ class Interview < ActiveRecord::Base
   # has_many :preferred_dates
   belongs_to :scheduler, class_name: "User"
   belongs_to :interviewee, class_name: "User"
+
+  validates_presence_of :interviewee_id, :scheduler_id
 end

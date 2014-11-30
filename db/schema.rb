@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 20141130021909) do
     t.datetime "preferred_datetime_bottom"
     t.datetime "begins_at"
     t.datetime "ends_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "interviews", ["interviewee_id"], name: "index_interviews_on_interviewee_id", using: :btree

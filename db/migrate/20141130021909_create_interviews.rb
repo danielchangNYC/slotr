@@ -8,6 +8,7 @@ class CreateInterviews < ActiveRecord::Migration
       t.datetime :preferred_datetime_bottom
       t.datetime :begins_at
       t.datetime :ends_at
+      t.timestamps
     end
   end
 end

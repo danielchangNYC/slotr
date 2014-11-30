@@ -1,1 +1,9 @@
-span Hi
+- if @interviews.present?
+  h1 Pending Interviews
+  - @interviews.each do |interview|
+    = interview.interviewee.full_name
+
+- else
+  h1 I'm here to help
+
+= link_to "Schedule an Interview", new_interview_path, class: 'button'
