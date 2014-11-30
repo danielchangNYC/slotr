@@ -35,6 +35,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'google-api-client'
+
 gem 'devise'
 gem "omniauth-google-oauth2"
 gem 'pry', group: [:development, :test]
