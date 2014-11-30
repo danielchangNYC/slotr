@@ -19,15 +19,21 @@ class User < ActiveRecord::Base
     user = User.find_by(:email => data["email"])
     if user
       user.update_attributes(
-          first_name: data["first_name"],
-          last_name: data["last_name"]
-        )
+        first_name: data["first_name"],
+        last_name: data["last_name"],
+        provider: access_token.provider,
+        uid: access_token.uid,
+        token: access_token.credentials.token
+      )
     else
       user = User.create(
-         email: data["email"],
-         password: Devise.friendly_token[0,20],
-         first_name: data["first_name"],
-         last_name: data["last_name"]
+        email: data["email"],
+        password: Devise.friendly_token[0,20],
+        first_name: data["first_name"],
+        last_name: data["last_name"],
+        provider: access_token.provider,
+        uid: access_token.uid,
+        token: access_token.credentials.token
       )
     end
     user

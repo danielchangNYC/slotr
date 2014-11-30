@@ -40,7 +40,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'google-api-client'
+gem 'google-api-client', :require => 'google/api_client'
 gem 'foundation-rails'
 gem 'devise'
 gem "omniauth-google-oauth2"
