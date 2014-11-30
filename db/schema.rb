@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141130063144) do
+ActiveRecord::Schema.define(version: 20141130192331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,14 @@ ActiveRecord::Schema.define(version: 20141130063144) do
   add_index "interviews", ["interviewee_id"], name: "index_interviews_on_interviewee_id", using: :btree
   add_index "interviews", ["scheduler_id"], name: "index_interviews_on_scheduler_id", using: :btree
 
+  create_table "possible_interview_blocks", force: true do |t|
+    t.integer  "interview_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+  end
+
+  add_index "possible_interview_blocks", ["interview_id"], name: "index_possible_interview_blocks_on_interview_id", using: :btree
+
   create_table "profiles", force: true do |t|
     t.integer "user_id"
     t.time    "preferred_ends_at"
@@ -43,6 +51,22 @@ ActiveRecord::Schema.define(version: 20141130063144) do
     t.boolean "prefer_sat"
     t.boolean "prefer_sun"
   end
+
+  create_table "rejected_interview_blocks", force: true do |t|
+    t.integer  "interview_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+  end
+
+  add_index "rejected_interview_blocks", ["interview_id"], name: "index_rejected_interview_blocks_on_interview_id", using: :btree
+
+  create_table "rejected_user_blocks", force: true do |t|
+    t.integer  "user_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+  end
+
+  add_index "rejected_user_blocks", ["user_id"], name: "index_rejected_user_blocks_on_user_id", using: :btree
 
   create_table "schedule_responses", force: true do |t|
     t.integer  "interview_id"

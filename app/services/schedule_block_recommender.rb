@@ -47,9 +47,9 @@ class ScheduleBlockRecommender
 
   private
     def block_available?(block_start_time)
-      # interview.interview_rejected_blocks.where()
+      # interview.rejected_interview_blocks.where()
 
-       # a) block exists in range of any interview_rejected_blocks?
+       # a) block exists in range of any rejected_interview_blocks?
           # particularly, this means:
 
             # block.starts_between?(interv_rej_block) || block.ends_between?(interv_rej_block)

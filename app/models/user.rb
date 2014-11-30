@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_one :profile  #(No profile = not a scheduler)
   has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheduler_id"
   has_many :schedule_responses
+  has_many :rejected_user_blocks
   # has_many :user_contacts
   # has_many :contacts, through: user_contacts
 
