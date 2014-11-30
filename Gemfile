@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
-# gem 'chronic'
+gem 'chronic'
 # gem 'momentjs-rails', '>= 2.8.1'
 # gem 'bootstrap3-datetimepicker-rails', '~> 3.1.3'
 
