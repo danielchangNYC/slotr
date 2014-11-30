@@ -30,7 +30,7 @@ class ScheduleBlockRecommender
   def create_possible_recommendations_for_interview
     block_start_time = Chronic.parse(DEFAULT_START)
 
-    until current_possible_interviews == 15
+    until current_possible_interviews.count == 15
 
       if block_available?(block_start_time)
         interview.possible_interview_blocks.create(
@@ -41,6 +41,10 @@ class ScheduleBlockRecommender
 
       increment_time_by_30_min_or_to_next_day(block_start_time)
     end
+  end
+
+  def get_three_soonest_recommendations
+    current_possible_interviews.order(start_time: :asc).take(3)
   end
 
   private
@@ -68,6 +72,6 @@ class ScheduleBlockRecommender
     end
 
     def current_possible_interviews
-      interview.possible_interview_blocks.count
+      interview.possible_interview_blocks
     end
 end
