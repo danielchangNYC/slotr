@@ -4,7 +4,7 @@ require 'google/api_client/auth/installed_app'
 
 class GoogleCalendarWrapper
   include Singleton
-  attr_reader :client
+  attr_reader :client, :calendar
 
   def initialize
     client_secrets = Google::APIClient::ClientSecrets.load(Rails.root.join('config','client_secrets.json'))
@@ -18,4 +18,13 @@ class GoogleCalendarWrapper
       :application_version => '0.0.1'
     )
   end
+
+  def calendar
+    @calendar ||= client.discovered_api('calendar', 'v3')
+  end
 end
+
+# api_client.execute(:api_method => calendar_api.events.list,
+#                               :parameters => {'calendarId' => 'primary'},
+#                               :authorization => user_credentials)
+
