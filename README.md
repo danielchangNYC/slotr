@@ -45,26 +45,34 @@ user_id
 
 INTERVIEWS
 has_many :interviewers, through: :interview_interviewers, class_name: "User"
-has_many :rejected_datetimes
-has_many :preferred_dates
+has_many :rejected_interview_blocks
+has_many :possible_interview_blocks
 has_many :schedule_responses
 belongs_to :scheduler, class_name: "User" (the user who created it)
   # scheduler_id
 belongs_to :interviewee, class_name: "User"
   # interviewee_id
-preferred_datetime_top
-preferred_datetime_middle
-preferred_datetime_bottom
+preferred_block_top
+preferred_block_middle
+preferred_block_bottom
 begins_at
 ends_at
 
-REJECTED_DATETIMES
+REJECTED_INTERVIEW_BLOCKS
 belongs_to :interview
-datetime
+start_time datetime
+end_time datetime
 
-PREFERRED_DATES
+REJECTED_USER_BLOCKS
+belongs_to :user
+start_time datetime
+end_time datetime
+
+POSSIBLE_INTERVIEW_BLOCKS
 belongs_to :interview
-datetime
+start_time datetime
+end_time datetime
+// Maybe have a sync calendar button to recalculate user calendar.
 
 SCHEDULE_RESPONSES
 belongs_to :interview

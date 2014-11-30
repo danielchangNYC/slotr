@@ -5,9 +5,14 @@ class InterviewsController < ApplicationController
 
   def new
     @interview = Interview.new(scheduler_id: current_user.id)
-    GoogleClientWrapper.get_possible_dates_for(current_user)
+    @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user)
   end
 
   def create
   end
 end
+
+# IF USER DELETES A RECOMMENDED SCHEDULE BLOCK
+  # Add to interview_rejected_blocks
+  # Remove from possible_interview_blocks
+  # Recommend the next one.
