@@ -5,7 +5,7 @@ class InterviewsController < ApplicationController
 
   def new
     @interview = Interview.new(scheduler_id: current_user.id)
-    @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user)
+    @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user, @interview)
   end
 
   def create
