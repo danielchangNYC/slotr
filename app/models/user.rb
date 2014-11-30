@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2]
   has_one :profile  #(No profile = not a scheduler)
+  has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheduler_id"
   # has_many :user_contacts
   # has_many :contacts, through: user_contacts
 

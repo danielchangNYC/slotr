@@ -18,6 +18,7 @@ USERS
 has_one :profile  (No profile = not a scheduler)
 has_many :user_contacts
 has_many :contacts, through: user_contacts
+has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheulder_id"
 email  (validate uniqueness)
 first_name
 last_name
