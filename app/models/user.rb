@@ -3,10 +3,12 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2]
   has_one :profile  #(No profile = not a scheduler)
   has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheduler_id"
+  has_many :schedule_responses
   # has_many :user_contacts
   # has_many :contacts, through: user_contacts
 
   validates_uniqueness_of :email
+  validates_presence_of :first_name, :last_name
 
   def full_name
     "#{first_name.capitalize} #{last_name.capitalize}"

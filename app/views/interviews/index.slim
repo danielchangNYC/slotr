@@ -1,9 +1,11 @@
 - if @interviews.present?
   h1 Pending Interviews
   - @interviews.each do |interview|
-    = interview.interviewee.full_name
-
+    = "Interview for: #{interview.interviewee.full_name}"
+    br
+    = "#{interview.pending_responses.count} Pending"
 - else
   h1 I'm here to help
 
+br
 = link_to "Schedule an Interview", new_interview_path, class: 'button'

@@ -4,6 +4,15 @@ class Interview < ActiveRecord::Base
   # has_many :preferred_dates
   belongs_to :scheduler, class_name: "User"
   belongs_to :interviewee, class_name: "User"
+  has_many :schedule_responses
 
   validates_presence_of :interviewee_id, :scheduler_id
+
+  def pending?
+    begins_at.nil?
+  end
+
+  def pending_responses
+    schedule_responses.where(responded_on: nil)
+  end
 end

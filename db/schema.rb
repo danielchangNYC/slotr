@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141130021909) do
+ActiveRecord::Schema.define(version: 20141130031715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,16 @@ ActiveRecord::Schema.define(version: 20141130021909) do
     t.boolean "prefer_sat"
     t.boolean "prefer_sun"
   end
+
+  create_table "schedule_responses", force: true do |t|
+    t.integer  "interview_id"
+    t.integer  "user_id"
+    t.datetime "responded_on"
+    t.string   "code"
+  end
+
+  add_index "schedule_responses", ["interview_id"], name: "index_schedule_responses_on_interview_id", using: :btree
+  add_index "schedule_responses", ["user_id"], name: "index_schedule_responses_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "first_name"
