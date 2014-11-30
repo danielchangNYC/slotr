@@ -80,3 +80,9 @@ sched_response = ScheduleResponse.find_by(code: params[:code])
 user = sched_response.user
 interview = sched_response.interview
 role = interview.role_for(user)
+
+
+Setup
+===
+config/secrets.yml
+config/client_secrets.json

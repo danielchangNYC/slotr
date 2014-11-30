@@ -6,7 +6,11 @@ class Interview < ActiveRecord::Base
   belongs_to :interviewee, class_name: "User"
   has_many :schedule_responses
 
-  validates_presence_of :interviewee_id, :scheduler_id
+  validates_presence_of :scheduler_id
+
+  def incomplete_setup?
+    interviewee.nil?
+  end
 
   def pending?
     begins_at.nil?
