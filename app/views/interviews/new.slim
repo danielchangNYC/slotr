@@ -1,20 +1,19 @@
-h1 Who is coming?
+.page-title-container
+  h2.page-title Who is coming?
 
-= form_for @interview do |f|
-  h4 Interviewee
-  = f.fields_for :interviewee do |interviewee_form|
-    = interviewee_form.label :email
-    = interviewee_form.text_field :email
-    br
-    = interviewee_form.label :first_name
-    = interviewee_form.text_field :first_name
-    = interviewee_form.label :last_name
-    = interviewee_form.text_field :last_name
-  = f.hidden_field :scheduler_id, value: current_user.id
-  br
-  h4 Interviewer(s)
-  = label_tag :email, "Enter an email or a comma-separated list of emails"
-  = text_field_tag "interview[interviewers][]"
-  = text_field_tag "interview[interviewers][]"
-  br
-  = f.submit
+.row
+  .small-12.medium-9.medium-centered.columns
+    = form_for @interview do |f|
+      h4 Interviewee
+      = f.fields_for :interviewee do |interviewee_form|
+        = interviewee_form.text_field :email, placeholder: "Email"
+        = interviewee_form.text_field :first_name, placeholder: "First Name"
+        = interviewee_form.text_field :last_name, placeholder: "Last Name"
+      = f.hidden_field :scheduler_id, value: current_user.id
+      h4 Interviewer(s)
+      = text_field_tag "interview[interviewers][]", "", placeholder: "Email 1"
+      = text_field_tag "interview[interviewers][]", "", placeholder: "Email 2"
+
+.btm-button
+  = submit_tag "Continue", class: 'button success expand'
+

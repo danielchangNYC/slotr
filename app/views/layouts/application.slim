@@ -7,10 +7,10 @@ html  lang="en"
     = stylesheet_link_tag    'application', media: 'all'
     = javascript_include_tag "vendor/modernizr"
     = csrf_meta_tags
-  body.layout-btm-buttons
+  body.layout-btm-buttons.bg-primary
     - flash.each do |type, message|
       - if !message.empty?
         .flash= message
-    .page-container.bg-primary
+    .page-container
       == yield
     = javascript_include_tag 'application'
