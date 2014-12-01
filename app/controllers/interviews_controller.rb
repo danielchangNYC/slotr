@@ -13,9 +13,16 @@ class InterviewsController < ApplicationController
   end
 
   def create
+    binding.pry
+    # @interview = Interview.create
   end
 
   def update
+  end
+
+  private
+  def interview_params
+    params.require(:interview).permit(:scheduler_id, :interviewers => [], :interviewee => [:email, :first_name, :last_name])
   end
 end
 

@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2]
   has_one :profile  #(No profile = not a scheduler)
+  has_many :interview_interviewers, foreign_key: "interviewer_id"
+  has_many :interviews, through: :interview_interviewers, foreign_key: "interviewer_id"
   has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheduler_id"
   has_many :schedule_responses
   has_many :rejected_user_blocks
@@ -9,7 +11,6 @@ class User < ActiveRecord::Base
   # has_many :contacts, through: user_contacts
 
   validates_uniqueness_of :email
-  validates_presence_of :first_name, :last_name
 
   def full_name
     "#{first_name.capitalize} #{last_name.capitalize}"

@@ -1,1 +1,20 @@
-h1 New Interview
+h1 Who is coming?
+
+= form_for @interview do |f|
+  h4 Interviewee
+  = f.fields_for :interviewee do |interviewee_form|
+    = interviewee_form.label :email
+    = interviewee_form.text_field :email
+    br
+    = interviewee_form.label :first_name
+    = interviewee_form.text_field :first_name
+    = interviewee_form.label :last_name
+    = interviewee_form.text_field :last_name
+  = f.hidden_field :scheduler_id, value: current_user.id
+  br
+  h4 Interviewer(s)
+  = label_tag :email, "Enter an email or a comma-separated list of emails"
+  = text_field_tag "interview[interviewers][]"
+  = text_field_tag "interview[interviewers][]"
+  br
+  = f.submit
