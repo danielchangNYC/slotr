@@ -1,13 +1,14 @@
-- if @interviews.present?
-  .page-title-container
-    h2.page-title Pending Interviews
-  - @interviews.each do |interview|
-    = "Interview for: #{interview.interviewee.full_name}"
-    br
-    = "#{interview.pending_responses.count} Pending"
-- else
-  .page-title-container
-    h2.page-title I'm here to help
+.page-container.bg-primary
+  - if @interviews.present?
+    .page-title-container
+      h2.page-title Pending Interviews
+    - @interviews.each do |interview|
+      = "Interview for: #{interview.interviewee.full_name}"
+      br
+      = "#{interview.pending_responses.count} Pending"
+  - else
+    .page-title-container
+      h2.page-title I'm here to help
 
-br
-= link_to "Schedule an Interview", new_interview_path, class: 'button'
+  .btm-button
+    = link_to "Schedule an Interview", new_interview_path, class: 'button success expand'
