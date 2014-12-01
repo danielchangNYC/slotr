@@ -9,12 +9,21 @@ class InterviewsController < ApplicationController
 
   def edit
     @interview = Interview.find(params[:id])
-    @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user)
+    # @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user, @interview)
+    @date_recommendations = @interview.possible_interview_blocks.take(3)
   end
 
   def create
-    binding.pry
-    # @interview = Interview.create
+    interviewee = find_or_create_interviewee
+    @interview = Interview.create(
+      scheduler_id: interview_params[:scheduler_id],
+      interviewee_id: interviewee.id
+      )
+    interview_params[:interviewers].each do |email|
+      @interview.interviewers.find_or_create_by(email: email)
+    end
+
+    redirect_to edit_interview_path @interview
   end
 
   def update
@@ -23,6 +32,15 @@ class InterviewsController < ApplicationController
   private
   def interview_params
     params.require(:interview).permit(:scheduler_id, :interviewers => [], :interviewee => [:email, :first_name, :last_name])
+  end
+
+  def find_or_create_interviewee
+    if interviewee = User.find_by(email: interview_params[:interviewee][:email])
+      interviewee.update_attributes!(interview_params[:interviewee])
+    else
+      interviewee = User.create!(email: interview_params[:interviewee][:email], password: "password", first_name: interview_params[:interviewee][:first_name], last_name: interview_params[:interviewee][:last_name])
+    end
+    interviewee
   end
 end
 
