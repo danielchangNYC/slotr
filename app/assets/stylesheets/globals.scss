@@ -26,6 +26,13 @@
   line-height: 100px;
 }
 
+.page-title-long {
+  text-align: center;
+  width: 100%;
+  font-size: 20px;
+  line-height: 50px;
+}
+
 .btm-button {
   position: fixed;
   bottom: 0;
@@ -44,5 +51,10 @@
   .page-title {
     font-size: 70px;
     line-height: 140px;
+  }
+
+  .page-title-long {
+    font-size: 35px;
+    line-height: 70px;
   }
 }

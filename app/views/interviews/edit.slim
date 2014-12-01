@@ -1,10 +1,16 @@
 .page-title-container
-  h2.page-title Edit Interview for #{@interview.interviewee.email}
+  h2.page-title-long Edit Interview for
+  h2.page-title-long #{@interview.interviewee.full_name}
 
-ul
   - @date_recommendations.each do |date|
-    li
-      .fa.fa-bars
-      span = "#{date.start_time} to #{date.end_time}"
-      = button_to possible_interview_date_path(date), method: :delete do
-        .fa.fa-times-circle
+    .row.schedule-list-item
+      .small-1.columns.schedule-item.schedule-item-hamburger
+        .fa.fa-bars
+      .small-9.columns.schedule-item.schedule-item-time
+        = "#{date.start_time} to #{date.end_time}"
+      = link_to possible_interview_date_path(date), method: :delete, class: "schedule-item schedule-item-remove" do
+        .small-2.columns
+          .fa.fa-times-circle
+
+.btm-button
+  = submit_tag "Continue to Email", class: 'button success expand'
