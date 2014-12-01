@@ -9,9 +9,7 @@ class InterviewsController < ApplicationController
 
   def edit
     @interview = Interview.find(params[:id])
-    # Note: Temporary so that I can work on the train with fixture data.
-    # @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user, @interview)
-    @date_recommendations = @interview.possible_interview_blocks.take(3)
+    @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user, @interview)
   end
 
   def create
