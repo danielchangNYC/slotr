@@ -11,5 +11,6 @@ html  lang="en"
     - flash.each do |type, message|
       - if !message.empty?
         .flash= message
-    == yield
+    .page-container.bg-primary
+      == yield
     = javascript_include_tag 'application'
