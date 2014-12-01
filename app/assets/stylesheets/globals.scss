@@ -3,9 +3,11 @@
 }
 
 // Layout
+.layout-btm-buttons {
+  padding-bottom: 51px;
+}
 
 .page-container {
-  position: relative;
   width: 100%;
   height: 100%;
 }
@@ -25,7 +27,7 @@
 }
 
 .btm-button {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
 
