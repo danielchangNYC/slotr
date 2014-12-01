@@ -40,11 +40,12 @@ belongs_to :user
 belongs_to :contact, class_name: "User"
 
 INTERVIEW_INTERVIEWERS
-interview_id
-user_id
+belongs_to :interview
+belongs_to :interviewer, class_name: "User"
 
 INTERVIEWS
-has_many :interviewers, through: :interview_interviewers, class_name: "User"
+has_many :interview_interviewers
+has_many :interviewers, through: :interview_interviewers, class_name: "User", foreign_key: "interviewer_id"
 has_many :rejected_interview_blocks
 has_many :possible_interview_blocks
 has_many :schedule_responses

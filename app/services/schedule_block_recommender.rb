@@ -29,7 +29,6 @@ class ScheduleBlockRecommender
 
   def create_possible_recommendations_for_interview
     block_start_time = Chronic.parse(DEFAULT_START)
-
     until current_possible_interviews.count == 15
 
       if block_available?(block_start_time)
@@ -38,8 +37,7 @@ class ScheduleBlockRecommender
           end_time: interview_end_for(block_start_time)
         )
       end
-
-      increment_time_by_30_min_or_to_next_day(block_start_time)
+      block_start_time += increment_amount(block_start_time)
     end
   end
 
@@ -67,8 +65,8 @@ class ScheduleBlockRecommender
       time + INTERVIEW_DURATION
     end
 
-    def increment_time_by_30_min_or_to_next_day(block_start_time)
-      block_start_time += (block_start_time == END_OF_DAY ? HOURS_TO_NEXT_DAY : INTERVIEW_DURATION)
+    def increment_amount(block_start_time)
+      block_start_time == END_OF_DAY ? HOURS_TO_NEXT_DAY : INTERVIEW_DURATION
     end
 
     def current_possible_interviews
