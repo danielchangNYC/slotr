@@ -11,7 +11,7 @@ $(function(){
   }, false);
 
     list.addEventListener('slip:afterswipe', function(e){
-      $(e.target).html('');
+      $(e.target).remove();
       // Add data-possible-date-id to form
     }, false);
   new Slip(list);

@@ -2,14 +2,18 @@
   h2.page-title-long Edit Interview for
   h2.page-title-long #{@interview.interviewee.full_name}
 
+
+.page-content-container
+  h4 Drag them in the order most preferred.
+  h4 Swipe off screen from left icon (UI TO CHANGE) to remove any times that won’t work for you
   ul.schedule-list
     - @date_recommendations.each do |date|
-      li.schedule-list-item
+      li.schedule-list-item.instant data-possible-date-id="#{date.id}"
         .row
-          .small-1.columns
+          .small-2.columns
             .fa.fa-bars.fa-lg
-          .small-10.columns
-            .schedule-item-time
+          .small-10.columns.instant
+            .schedule-item-time.instant
               = "#{date.start_time.strftime('%a %m/%d %I:%M%p')} to #{date.end_time.strftime('%I:%M%p')}"
 
 .btm-button
