@@ -255,9 +255,7 @@ Devise.setup do |config|
   #
   config.omniauth :google_oauth2, Rails.application.secrets.APP_ID,
     Rails.application.secrets.APP_SECRET, {
-      access_type: 'offline',
       prompt: 'consent',
-      approval_prompt: "",
       scope: 'userinfo.email,calendar'
   }
   # When using omniauth, Devise cannot automatically set Omniauth path,
