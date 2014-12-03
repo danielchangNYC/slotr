@@ -36,7 +36,8 @@ class User < ActiveRecord::Base
         last_name: data["last_name"],
         provider: access_token.provider,
         uid: access_token.uid,
-        token: access_token.credentials.token
+        token: access_token.credentials.token,
+        refresh_token: access_token.credentials.refresh_token
       )
     end
     user
