@@ -2,15 +2,15 @@
   h2.page-title-long Edit Interview for
   h2.page-title-long #{@interview.interviewee.full_name}
 
-  - @date_recommendations.each do |date|
-    .row.schedule-list-item
-      .small-1.columns.schedule-item.schedule-item-hamburger
-        .fa.fa-bars
-      .small-9.columns.schedule-item.schedule-item-time
-        = "#{date.start_time} to #{date.end_time}"
-      = link_to possible_interview_date_path(date), method: :delete, class: "schedule-item schedule-item-remove" do
-        .small-2.columns
-          .fa.fa-times-circle
+  ul.schedule-list
+    - @date_recommendations.each do |date|
+      li.schedule-list-item
+        .row
+          .small-1.columns
+            .fa.fa-bars.fa-lg
+          .small-10.columns
+            .schedule-item-time
+              = "#{date.start_time.strftime('%a %m/%d %I:%M%p')} to #{date.end_time.strftime('%I:%M%p')}"
 
 .btm-button
   = submit_tag "Continue to Email", class: 'button success expand'
