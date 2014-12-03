@@ -1,97 +1,30 @@
-A bot to schedule your appointments.
+# Slotr
 
-Sally wants to arrange a late-hiring stage 30-minute phone interview of a candidate. The meeting will take place on the company dial-in bridge. She wants to invite the candidate and the hiring manager, and include herself as optional. In the past, coordinating a time was a pain. But now, she simply navigates to Slotr on her laptop or mobile device to get things setup. Slotr has access to her calendar and automatically suggests 30 minute windows that work for her. She selects several and then types in the names and e-mail addresses of candidate and hiring manager she’d like to invite. An e-mail is sent to them. The invitees click on the link and select and rank the time slots that work best for them. When all parties have responded Slotr sends a calendar invitation to each of them. At the head of each morning, Sally gets a summary e-mail showing her what meetings are being coordinated.
+Slotr is an application that helps secretaries coordinate interviews between him/herself, an interviewee, and several interviewers.
 
-Jobs to be done:
+## In Development
 
-When Sally wants to schedule a meeting, she can see when she is free and include the parties she wants to invite, so that an optimal time can be selected
-When an invitee receives a message from Slotr, they want to easily be able to prioritize their available times, so that they can meet at the best possible time
-When nobody is available, Sally wants to know as soon as possible, so she can send out new options
-When Sally has lots of meetings out for coordination, Sally wants to know what state of scheduling there in, so that she can pester them if necessary
+[Wireframe](https://www.fluidui.com/editor/live/preview/p_h3OtaxhUAKGXED1OH7ZCr2m8WThRQgv3.1417585944460)
+[Huboard](https://huboard.com/danielchangNYC/slotr)
+[Github](https://github.com/danielchangNYC/slotr)
 
+## Setup
 
-30 min interviews
-Inlude people on the interview, including self
-At the head of each morning, Sally gets a summary e-mail showing her what meetings are being coordinated.
+### config/secrets.yml
 
-USERS
-has_one :profile  (No profile = not a scheduler)
-has_many :user_contacts
-has_many :contacts, through: user_contacts
-has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheulder_id"
-email  (validate uniqueness)
-has_many :schedule_responses
-first_name
-last_name
+You will need to create a new application in the Google API Console.
 
-PROFILES
-preferred_begins_at
-preferred_ends_at
-prefer_mon?
-prefer_tues?
-prefer_wed?
-prefer_thurs?
-prefer_fri?
-prefer_sat?
-prefer_sun?
+Be sure to turn on the Google+, Calendar, and Contact APIs at minimum.
 
-USER_CONTACTS
-belongs_to :user
-belongs_to :contact, class_name: "User"
+Finally, create your secrets.yml file.
 
-INTERVIEW_INTERVIEWERS
-belongs_to :interview
-belongs_to :interviewer, class_name: "User"
+Example `config/secrets.yml` file:
+```
+development:
+  secret_key_base: 5db5ab78fa8dad3492bf7386b7cfbeda091767508860b87a81a7126c98f57289243822d7cc359cc596d03f83fcc1d5c65864efbabd65fb1b9472fb79d2f5538a
+  APP_ID: your-google-client-id
+  APP_SECRET: your-google-client-secret
 
-INTERVIEWS
-has_many :interview_interviewers
-has_many :interviewers, through: :interview_interviewers, class_name: "User", foreign_key: "interviewer_id"
-has_many :rejected_interview_blocks
-has_many :possible_interview_blocks
-has_many :schedule_responses
-belongs_to :scheduler, class_name: "User" (the user who created it)
-  # scheduler_id
-belongs_to :interviewee, class_name: "User"
-  # interviewee_id
-preferred_block_top
-preferred_block_middle
-preferred_block_bottom
-begins_at
-ends_at
-
-REJECTED_INTERVIEW_BLOCKS
-belongs_to :interview
-start_time datetime
-end_time datetime
-
-REJECTED_USER_BLOCKS
-belongs_to :user
-start_time datetime
-end_time datetime
-
-POSSIBLE_INTERVIEW_BLOCKS
-belongs_to :interview
-start_time datetime
-end_time datetime
-// Maybe have a sync calendar button to recalculate user calendar.
-
-SCHEDULE_RESPONSES
-belongs_to :interview
-belongs_to :user
-code
-responded_on
-
-// How does responding to the scheduler work?
-www.slotr.com/schedule_responses/SDIUHFWEFOIJA23090KLSD
-schedule_responses#response
-
-sched_response = ScheduleResponse.find_by(code: params[:code])
-user = sched_response.user
-interview = sched_response.interview
-role = interview.role_for(user)
-
-
-Setup
-===
-config/secrets.yml
-config/client_secrets.json
+test:
+  secret_key_base: 9c1afe283b2ec1a644258f5b79e3c1a0da0a453d95ce375714bb349699f1028ad0955a0d13370025c6f9daaf4eb11a93f33ae979a365b12b43280b39f25b1bae
+```
