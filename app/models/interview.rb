@@ -2,8 +2,8 @@ class Interview < ActiveRecord::Base
   has_many :interview_interviewers
   has_many :interviewers, through: :interview_interviewers, class_name: "User", foreign_key: "interviewer_id"
 
-  has_many :rejected_interview_blocks
-  has_many :possible_interview_blocks
+  has_many :rejected_interview_blocks, dependent: :destroy
+  has_many :possible_interview_blocks, dependent: :destroy
 
   belongs_to :scheduler, class_name: "User"
   belongs_to :interviewee, class_name: "User"

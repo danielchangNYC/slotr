@@ -1,12 +1,12 @@
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2]
-  has_one :profile  #(No profile = not a scheduler)
+  has_one :profile, dependent: :destroy  #(No profile = not a scheduler)
   has_many :interview_interviewers, foreign_key: "interviewer_id"
   has_many :interviews, through: :interview_interviewers, foreign_key: "interviewer_id"
-  has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheduler_id"
-  has_many :schedule_responses
-  has_many :rejected_user_blocks
+  has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheduler_id", dependent: :destroy
+  has_many :schedule_responses, dependent: :destroy
+  has_many :rejected_user_blocks, dependent: :destroy
   # has_many :user_contacts
   # has_many :contacts, through: user_contacts
 
