@@ -1,5 +1,5 @@
 class GoogleClientWrapper
-  attr_accessor :client, :service, :calendar_id, :access_token, :refresh_token
+  attr_accessor :client, :service, :calendar_id, :access_token, :refresh_token, :user
 
   def self.get_possible_dates_for(user)
     new(user).get_possible_dates
@@ -50,14 +50,13 @@ class GoogleClientWrapper
   def exchange_refresh_token
     client.authorization.grant_type = 'refresh_token'
     client.authorization.refresh_token = refresh_token
-    # client.authorization.client_id = Rails.application.secrets.APP_ID
-    # client.authorization.client_secret = Rails.application.secrets.APP_SECRET
-    # client.authorization.scope = 'userinfo.email,calendar'
-    # client.authorization.scope = "https://www.googleapis.com/auth/drive"
-    # client.authorization.update_token!(access_token)
-    # binding.pry
-    client.authorization.fetch_access_token!
-    # TODO reset user's refresh and access tokens here
+    client.authorization.client_id = Rails.application.secrets.APP_ID
+    client.authorization.client_secret = Rails.application.secrets.APP_SECRET
+    client.authorization.scope = 'userinfo.email,calendar'
+    client.authorization.scope = "https://www.googleapis.com/auth/drive"
+    new_token_response = client.authorization.fetch_access_token!
+    user.token = new_token_response["access_token"]
+    user.save
     client.authorization
   end
 end
