@@ -37,7 +37,7 @@ class ScheduleBlockRecommender
       until current_possible_interviews == 15
 
         if block_available?(block_start_time)
-          interview.possible_interview_blocks.create(
+          interview.possible_interview_blocks.find_or_create_by(
             start_time: block_start_time,
             end_time: interview_end_for(block_start_time)
           )
@@ -49,7 +49,7 @@ class ScheduleBlockRecommender
   end
 
   def get_three_soonest_recommendations
-    interview.possible_interview_blocks.order(start_time: :asc).take(3)
+    interview.get_three_possible_blocks
   end
 
   private

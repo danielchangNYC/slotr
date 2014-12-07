@@ -38,7 +38,7 @@ class GoogleClientWrapper
     exchange_refresh_token if token_expired?(access_token)
     client.execute(
       :api_method => service.events.list,
-      :parameters => {'calendarId' => calendar_id,'orderBy' => 'startTime','singleEvents' => 'true','timeMin' => DateTime.now.strftime("%FT%T%:z")},
+      :parameters => {'calendarId' => calendar_id,'orderBy' => 'startTime','maxResults' => '150','singleEvents' => 'true','timeMin' => DateTime.now.strftime("%FT%T%:z")},
       :headers => {'Content-Type' => 'application/json'})
   end
 
