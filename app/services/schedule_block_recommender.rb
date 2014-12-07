@@ -30,9 +30,14 @@ class ScheduleBlockRecommender
   end
 
   def create_possible_recommendations_for_interview
+    # TEMPORARY FIX. Chronic uses Time module's zone. Rails defaults to UTC. Ideally we want to set Chronic's timezone to the user's timezone. ALTERNATIVE: set application.rb time_zone to your dev env timezone.
+
+    # OPTING FOR ALTERING application.rb FOR THE MEANTIME
+    # Time.zone = "UTC"
+    # Chronic.time_class = Time.zone
+
     block_start_time = Chronic.parse(DEFAULT_START)
     current_possible_interviews = interview.possible_interview_blocks.count
-
     ActiveRecord::Base.transaction do
       until current_possible_interviews == 15
 
