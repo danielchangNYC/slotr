@@ -22,27 +22,34 @@ class ScheduleBlockRecommender
   end
 
   def update_user_gcal_unavailabilities
-    GoogleClientWrapper.get_possible_dates_for(user).each do |date|
-      user.rejected_user_blocks.find_or_create_by(start_time: date[:start_time], end_time: date[:end_time])
+    ActiveRecord::Base.transaction do
+      GoogleClientWrapper.get_possible_dates_for(user).each do |date|
+        user.rejected_user_blocks.find_or_create_by(start_time: date[:start_time], end_time: date[:end_time])
+      end
     end
   end
 
   def create_possible_recommendations_for_interview
     block_start_time = Chronic.parse(DEFAULT_START)
-    until current_possible_interviews.count == 15
+    current_possible_interviews = interview.possible_interview_blocks.count
 
-      if block_available?(block_start_time)
-        interview.possible_interview_blocks.create(
-          start_time: block_start_time,
-          end_time: interview_end_for(block_start_time)
-        )
+    ActiveRecord::Base.transaction do
+      until current_possible_interviews == 15
+
+        if block_available?(block_start_time)
+          interview.possible_interview_blocks.create(
+            start_time: block_start_time,
+            end_time: interview_end_for(block_start_time)
+          )
+          current_possible_interviews += 1
+        end
+        block_start_time += increment_amount(block_start_time)
       end
-      block_start_time += increment_amount(block_start_time)
     end
   end
 
   def get_three_soonest_recommendations
-    current_possible_interviews.order(start_time: :asc).take(3)
+    interview.possible_interview_blocks.order(start_time: :asc).take(3)
   end
 
   private
@@ -67,9 +74,5 @@ class ScheduleBlockRecommender
 
     def increment_amount(block_start_time)
       block_start_time == END_OF_DAY ? HOURS_TO_NEXT_DAY : INTERVIEW_DURATION
-    end
-
-    def current_possible_interviews
-      interview.possible_interview_blocks
     end
 end

@@ -26,6 +26,14 @@ class InterviewsController < ApplicationController
   end
 
   def update
+    @interview = Interview.find(params[:id])
+    rankings = params[:preferred_blocks].map(&:to_i)
+
+    ActiveRecord::Base.transaction do
+      @interview.clear_rankings
+      @interview.update_ranks!(rankings)
+    end
+    redirect_to root_path
   end
 
   private

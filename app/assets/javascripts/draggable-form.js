@@ -3,7 +3,17 @@ $(function(){
 
   list.addEventListener('slip:reorder', function(e){
     e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
-    return false;
+    var date1 = $('#date1'),
+        date2 = $('#date2'),
+        date3 = $('#date3'),
+        recs  = $('.schedule-list-item'),
+        possibleDateIds = $.map(recs, function(rec, i){
+          return $(rec).data('possible-date-id');
+        });
+
+    $(date1).attr('value', possibleDateIds[0]);
+    $(date2).attr('value', possibleDateIds[1]);
+    $(date3).attr('value', possibleDateIds[2]);
   }, false);
 
   list.addEventListener('slip:beforewait', function(e){

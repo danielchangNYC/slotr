@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203044749) do
+ActiveRecord::Schema.define(version: 20141207054854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,9 +26,6 @@ ActiveRecord::Schema.define(version: 20141203044749) do
   create_table "interviews", force: true do |t|
     t.integer  "scheduler_id"
     t.integer  "interviewee_id"
-    t.datetime "preferred_datetime_top"
-    t.datetime "preferred_datetime_middle"
-    t.datetime "preferred_datetime_bottom"
     t.datetime "begins_at"
     t.datetime "ends_at"
     t.datetime "created_at"
@@ -42,6 +39,7 @@ ActiveRecord::Schema.define(version: 20141203044749) do
     t.integer  "interview_id"
     t.datetime "start_time"
     t.datetime "end_time"
+    t.integer  "rank"
   end
 
   add_index "possible_interview_blocks", ["interview_id"], name: "index_possible_interview_blocks_on_interview_id", using: :btree
