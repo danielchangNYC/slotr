@@ -31,10 +31,10 @@ class ScheduleBlockRecommender
 
   def create_possible_recommendations_for_interview
     block_start_time = Chronic.parse(DEFAULT_START)
-    current_possible_interviews = interview.possible_interview_blocks
+    current_possible_interviews = interview.possible_interview_blocks.count
 
     ActiveRecord::Base.transaction do
-      until current_possible_interviews.count == 15
+      until current_possible_interviews == 15
 
         if block_available?(block_start_time)
           interview.possible_interview_blocks.create(

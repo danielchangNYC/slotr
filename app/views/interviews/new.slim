@@ -1,9 +1,9 @@
 .page-title-container
   h2.page-title Who is coming?
 
-.row
-  .small-12.medium-9.medium-centered.columns
-    = form_for @interview do |f|
+= form_for @interview do |f|
+  .row
+    .small-12.medium-9.medium-centered.columns
       h4 Interviewee
       = f.fields_for :interviewee do |interviewee_form|
         = interviewee_form.text_field :email, placeholder: "Email"
@@ -14,6 +14,6 @@
       = text_field_tag "interview[interviewers][]", "", placeholder: "Email 1"
       = text_field_tag "interview[interviewers][]", "", placeholder: "Email 2"
 
-      .btm-button
-        = submit_tag "Continue to Scheduling", class: 'button success expand'
+  .btm-button
+    = submit_tag "Continue to Scheduling", class: 'button success expand'
 
