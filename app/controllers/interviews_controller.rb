@@ -33,7 +33,13 @@ class InterviewsController < ApplicationController
       @interview.clear_rankings
       @interview.update_ranks!(rankings)
     end
-    redirect_to root_path
+    redirect_to interview_new_schedule_responses_path @interview
+  end
+
+  def new_schedule_responses
+    @interview = Interview.find(params[:interview_id])
+    @interviewee = @interview.interviewee
+    @interviewers = @interview.interviewers
   end
 
   private
@@ -50,8 +56,3 @@ class InterviewsController < ApplicationController
     interviewee
   end
 end
-
-# IF USER DELETES A RECOMMENDED SCHEDULE BLOCK
-  # Add to interview_rejected_blocks
-  # Remove from possible_interview_blocks
-  # Recommend the next one.
