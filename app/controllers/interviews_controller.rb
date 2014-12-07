@@ -42,6 +42,15 @@ class InterviewsController < ApplicationController
     @interviewers = @interview.interviewers
   end
 
+  def create_schedule_responses
+    @interview = Interview.find(params[:interview_id])
+    @interviewee = @interview.interviewee
+    @interviewers = @interview.interviewers
+    ScheduleResponseMailer.send_interviewer_template(@interviewers)
+    ScheduleResponseMailer.send_interviewee_template(@interviewee)
+    redirect_to root_path
+  end
+
   private
   def interview_params
     params.require(:interview).permit(:scheduler_id, :interviewers => [], :interviewee => [:email, :first_name, :last_name])
