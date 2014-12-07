@@ -8,13 +8,7 @@
     h4 Swipe off screen from left icon (UI TO CHANGE) to remove any times that won’t work for you
     ul.schedule-list
       - @date_recommendations.each do |date|
-        li.schedule-list-item.instant data-possible-date-id="#{date.id}"
-          .row
-            .small-2.columns
-              .fa.fa-bars.fa-lg
-            .small-10.columns.instant
-              .schedule-item-time.instant
-                = "#{date.start_time.strftime('%a %m/%d %I:%M%p')} to #{date.end_time.strftime('%I:%M%p')}"
+        = render partial: 'shared/schedule_list_item', locals: {date: date}
 
     / TEMP put hidden fields in separate iteration. it is breaking slip.js when in the ul container
     - @date_recommendations.each_with_index do |date, i|

@@ -7,5 +7,5 @@ Rails.application.routes.draw do
 
   resources :interviews, only: [:index, :new, :create, :edit, :update]
 
-  resources :possible_interview_dates, only: [:destroy]
+  resources :possible_interview_blocks, only: [:destroy]
 end

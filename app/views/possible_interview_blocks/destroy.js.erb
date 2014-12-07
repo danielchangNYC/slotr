@@ -1,0 +1,5 @@
+// Add the new interview date
+$('.schedule-list').append('<%= escape_javascript(render partial: "shared/schedule_list_item", locals: {date: @new_block}) %>')
+
+// Rerank
+rerank();

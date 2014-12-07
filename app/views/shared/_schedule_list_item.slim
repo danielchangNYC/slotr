@@ -1,0 +1,7 @@
+li.schedule-list-item.instant data-possible-date-id="#{date.id}"
+  .row
+    .small-2.columns
+      .fa.fa-bars.fa-lg
+    .small-10.columns.instant
+      .schedule-item-time.instant
+        = "#{date.start_time.strftime('%a %m/%d %I:%M%p')} to #{date.end_time.strftime('%I:%M%p')}"

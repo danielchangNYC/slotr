@@ -23,6 +23,21 @@ class Interview < ActiveRecord::Base
     preferred_blocks.each { |b| b.rank = nil }
   end
 
+  def get_three_possible_blocks
+    possible_interview_blocks.order(start_time: :asc).take(3)
+  end
+
+  def get_new_possible_block
+    possible_interview_blocks.order(start_time: :asc).third
+  end
+
+  def reject_block!(poss_block)
+    ActiveRecord::Base.transaction do
+      rejected_interview_blocks.create!(start_time: poss_block.start_time, end_time: poss_block.end_time)
+      poss_block.destroy!
+    end
+  end
+
   def update_ranks!(rankings)
     # Find by ranking, group by ids, and then slice given original ranking order
     blocks = PossibleInterviewBlock.find(rankings).index_by(&:id).slice(*rankings).values
