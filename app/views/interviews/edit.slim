@@ -14,7 +14,7 @@
               .fa.fa-bars.fa-lg
             .small-10.columns.instant
               .schedule-item-time.instant
-                = "#{date.start_time.strftime('%a %m/%d %I:%M%p')} to #{date.end_time.strftime('%I:%M%p')}"
+                = "#{i+1} #{date.start_time.strftime('%a %m/%d %I:%M%p')} to #{date.end_time.strftime('%I:%M%p')}"
 
         = f.hidden_field "preferred_block#{i+1}".to_sym, id: "date#{i+1}", value: date.id
     .btm-button
