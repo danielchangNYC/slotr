@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141207041638) do
+ActiveRecord::Schema.define(version: 20141207054854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,9 +30,6 @@ ActiveRecord::Schema.define(version: 20141207041638) do
     t.datetime "ends_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "preferred_block1"
-    t.integer  "preferred_block2"
-    t.integer  "preferred_block3"
   end
 
   add_index "interviews", ["interviewee_id"], name: "index_interviews_on_interviewee_id", using: :btree
@@ -42,6 +39,7 @@ ActiveRecord::Schema.define(version: 20141207041638) do
     t.integer  "interview_id"
     t.datetime "start_time"
     t.datetime "end_time"
+    t.integer  "rank"
   end
 
   add_index "possible_interview_blocks", ["interview_id"], name: "index_possible_interview_blocks_on_interview_id", using: :btree
@@ -80,9 +78,6 @@ ActiveRecord::Schema.define(version: 20141207041638) do
     t.integer  "user_id"
     t.datetime "responded_on"
     t.string   "code"
-    t.integer  "preferred_block1"
-    t.integer  "preferred_block2"
-    t.integer  "preferred_block3"
   end
 
   add_index "schedule_responses", ["interview_id"], name: "index_schedule_responses_on_interview_id", using: :btree

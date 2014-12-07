@@ -8,7 +8,7 @@ class Interview < ActiveRecord::Base
   belongs_to :scheduler, class_name: "User"
   belongs_to :interviewee, class_name: "User"
   has_many :schedule_responses
-
+  has_many :preferred_blocks, -> {where.not(rank: nil).order(rank: :asc)}, class_name: "PossibleInterviewBlock"
   validates_presence_of :scheduler_id, :interviewee_id
 
   def pending?
@@ -17,5 +17,18 @@ class Interview < ActiveRecord::Base
 
   def pending_responses
     schedule_responses.where(responded_on: nil)
+  end
+
+  def clear_rankings
+    preferred_blocks.each { |b| b.rank = nil }
+  end
+
+  def update_ranks!(rankings)
+    # Find by ranking, group by ids, and then slice given original ranking order
+    blocks = PossibleInterviewBlock.find(rankings).index_by(&:id).slice(*rankings).values
+    blocks.each_with_index do |block, i|
+      block.rank = i + 1
+      block.save!
+    end
   end
 end
