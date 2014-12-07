@@ -3,7 +3,7 @@ $(function(){
 
   list.addEventListener('slip:reorder', function(e){
     e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
-    return false;
+    console.log('here');
   }, false);
 
   list.addEventListener('slip:beforewait', function(e){
