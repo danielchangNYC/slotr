@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   has_many :scheduled_interviews, class_name: "Interview", foreign_key: "scheduler_id", dependent: :destroy
   has_many :schedule_responses, dependent: :destroy
   has_many :rejected_user_blocks, dependent: :destroy
+  has_many :rankings, dependent: :destroy
+  has_many :possible_interview_blocks, through: :rankings
   # has_many :user_contacts
   # has_many :contacts, through: user_contacts
 
