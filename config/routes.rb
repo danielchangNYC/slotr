@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   end
 
   resources :possible_interview_blocks, only: [:destroy]
-
-  get '/schedule_responses/:code' => 'schedule_responses#show', as: :schedule_response
+  resources :schedule_responses, only: [:update]
+  get '/schedule_responses/:code' => 'schedule_responses#edit', as: :edit_schedule_response
 end
