@@ -1,0 +1,6 @@
+p Hi #{@name},
+p You have successfully sent an email for #{@interviewee.full_name}'s (#{@interviewee.email}) interview to the following recipients:
+p Interviewers:
+ul
+  - @interviewers.each do |interviewer|
+    li #{interviewer.full_name}, #{interviewer.email}

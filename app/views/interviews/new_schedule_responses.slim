@@ -2,18 +2,23 @@
   h2.page-title Confirm
 
 .page-content-container
-  .email-to-interviewers
-    h3 Email to Interviewers
-    .email-confirm-template
-      = render partial: "shared/emails/interviewer_template", locals: {name: "INTERVIEWER", code: "CODE", interviewee_name: "INTERVIEWEE", scheduler_name: @interview.scheduler.full_name}
-    .email-confirm-addresses
-      h4 Sending to:
-      - @interviewers.each do |interviewer|
-        p #{interviewer.full_name}, #{interviewer.email}
-  .email-to-interviewers
-    h3 Email to Interviewee
-    .email-confirm-template
-      = render partial: "shared/emails/interviewee_template", locals: {name: "INTERVIEWEE", code: "CODE", scheduler_name: @interview.scheduler.full_name}
-    .email-confirm-addresses
-      h4 Sending to:
-      p #{@interviewee.full_name}, #{@interviewee.email}
+  .row
+    .small-12.medium-6.columns.email-to-interviewers
+      h3 Email to Interviewers
+      .email-confirm-template
+        = render partial: "shared/emails/interviewer_template", locals: {name: "INTERVIEWER", code: "CODE", interviewee_name: "INTERVIEWEE", scheduler_name: @interview.scheduler.full_name}
+      .email-confirm-addresses
+        h4 Sending to:
+        ul
+          - @interviewers.each do |interviewer|
+            li #{interviewer.full_name}, #{interviewer.email}
+    .small-12.medium-6.columns.email-to-interviewers
+      h3 Email to Interviewee
+      .email-confirm-template
+        = render partial: "shared/emails/interviewee_template", locals: {name: "INTERVIEWEE", code: "CODE", scheduler_name: @interview.scheduler.full_name}
+      .email-confirm-addresses
+        h4 Sending to:
+        p #{@interviewee.full_name}, #{@interviewee.email}
+
+.btm-button
+  = button_to 'Send Emails!', interview_create_schedule_responses_path(@interview), class: 'button success expand'

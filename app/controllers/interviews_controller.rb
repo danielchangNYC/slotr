@@ -44,11 +44,22 @@ class InterviewsController < ApplicationController
 
   def create_schedule_responses
     @interview = Interview.find(params[:interview_id])
-    @interviewee = @interview.interviewee
-    @interviewers = @interview.interviewers
-    ScheduleResponseMailer.send_interviewer_template(@interviewers)
-    ScheduleResponseMailer.send_interviewee_template(@interviewee)
-    redirect_to root_path
+    interviewers = @interview.interviewers
+    interviewee = @interview.interviewee
+
+    @interviewer_schedule_responses = interviewers.each do |interviewer|
+      @interview.schedule_responses.create(user: interviewer)
+    end
+
+    @interviewee_schedule_response = @interview.schedule_responses.create(user: interviewee)
+
+    @interviewer_schedule_responses.each do |response|
+      ScheduleResponseMailer.send_interviewer_template(response)
+    end
+    ScheduleResponseMailer.send_interviewee_template(@interviewee_schedule_response)
+    ScheduleResponseMailer.send_scheduler_confirm(@interview)
+    flash[:success] = "Emails sent!"
+    redirect_to interviews_path
   end
 
   private
