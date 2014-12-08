@@ -1,17 +1,16 @@
-#schedulerRecs.page-title-container
-  h2.page-title-long Edit Interview for
-  h2.page-title-long #{@interview.interviewee.full_name}
+#scheduleResponse.page-title-container
+  h2.page-title Welcome to Slotr!
 
-= form_for @interview do |f|
+= form_for @schedule_response do |f|
   .page-content-container
     h4 Drag them in the order most preferred.
     h4 Swipe off screen from left icon (UI TO CHANGE) to remove any times that won’t work for you
     ul.schedule-list
-      - @date_recommendations.each do |date|
+      - @blocks.each do |date|
         = render partial: 'shared/schedule_list_item', locals: {date: date}
 
     / TEMP put hidden fields in separate iteration. it is breaking slip.js when in the ul container
-    - @date_recommendations.each_with_index do |date, i|
+    - @blocks.each_with_index do |date, i|
       = hidden_field_tag "rankings[]".to_sym, date.id, id: "date#{i+1}"
     .btm-button
-      = submit_tag "Continue to Email", class: 'button success expand'
+      = submit_tag "Submit your Response", class: 'button success expand'

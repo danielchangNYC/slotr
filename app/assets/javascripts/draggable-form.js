@@ -7,9 +7,9 @@ function rerank(){
         return $(rec).data('possible-date-id');
       });
 
-  $(date1).attr('value', possibleDateIds[0]);
-  $(date2).attr('value', possibleDateIds[1]);
-  $(date3).attr('value', possibleDateIds[2]);
+  $(date1).attr('value', possibleDateIds[0] || '');
+  $(date2).attr('value', possibleDateIds[1] || '');
+  $(date3).attr('value', possibleDateIds[2] || '');
 }
 
 $(function(){
@@ -28,14 +28,17 @@ $(function(){
     var dateId = $(e.target).data('possible-date-id');
     $(e.target).remove();
 
-    $.ajax({
-      url: '/possible_interview_blocks/' + dateId,
-      type: 'DELETE',
-      success: function(result){
-        // response in views/shared/destroy.js.erb
-      }
-    });
-
+    if ($('#schedulerRecs').length == 1) {
+      $.ajax({
+        url: '/possible_interview_blocks/' + dateId,
+        type: 'DELETE',
+        success: function(result){
+          // response in views/shared/destroy.js.erb
+        }
+      });
+    } else {
+      rerank();
+    }
   }, false);
   new Slip(list);
 });
