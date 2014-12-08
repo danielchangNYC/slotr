@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Rankable # User can rank possible interview blocks
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2]
   has_one :profile, dependent: :destroy  #(No profile = not a scheduler)
@@ -9,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :rejected_user_blocks, dependent: :destroy
   has_many :rankings, dependent: :destroy
   has_many :possible_interview_blocks, through: :rankings
+
   # has_many :user_contacts
   # has_many :contacts, through: user_contacts
 
