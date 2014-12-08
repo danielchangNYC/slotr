@@ -40,6 +40,6 @@ class ScheduleResponseMailer < ActionMailer::Base
 
   private
   def create_url(code)
-    "#{Rails.application.secrets.DOMAIN_URL}/#{schedule_response_path(code)}"
+    "#{Rails.application.secrets.DOMAIN_URL}#{schedule_response_path(code)}"
   end
 end

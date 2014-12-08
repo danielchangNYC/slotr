@@ -33,8 +33,10 @@ class InterviewsController < ApplicationController
 
     scheduler = @interview.scheduler
     ActiveRecord::Base.transaction do
-      scheduler.clear_rankings
-      scheduler.update_ranks!(rankings)
+      scheduler.clear_and_update_ranks!(rankings)
+
+      # TO DO: Send out a notification after resetting schedule_responses. Send same code; will give the three new dates.
+      @interview.reset_schedule_responses
     end
     redirect_to interview_new_schedule_responses_path @interview
   end

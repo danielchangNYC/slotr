@@ -1,4 +1,10 @@
 module Rankable
+  def clear_and_update_ranks!(ids_in_ranked_order, rejected_ids=nil)
+    clear_rankings
+    update_rejects!(rejected_ids) if rejected_ids
+    update_ranks!(ids_in_ranked_order)
+  end
+
   def clear_rankings
     rankings.each { |ranking| ranking.rank = nil }
   end
@@ -9,6 +15,15 @@ module Rankable
     blocks.each_with_index do |block, i|
       ranking = Ranking.find_or_create_by(possible_interview_block_id: block.id, user_id: self.id)
       ranking.rank = i + 1
+      ranking.save!
+    end
+  end
+
+  def update_rejects!(rejected_ids)
+    rejects = PossibleInterviewBlock.find(rejected_ids)
+    rejects.each do |block|
+      ranking = Ranking.find_or_create_by(possible_interview_block_id: block.id, user_id: self.id)
+      ranking.rank = 0
       ranking.save!
     end
   end

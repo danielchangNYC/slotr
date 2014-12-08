@@ -30,6 +30,11 @@ class Interview < ActiveRecord::Base
     possible_interview_blocks.order(start_time: :asc).third
   end
 
+  def reset_schedule_responses
+    # Reset everytime a scheduler updates the possible dates so that if all responded_on are filled in, then all users have responded to the same 3 recommendations.
+    schedule_responses.each {|r| r.responded_on = nil; r.save! } if schedule_responses.present?
+  end
+
   def reject_block!(poss_block)
     ActiveRecord::Base.transaction do
       rejected_interview_blocks.create!(start_time: poss_block.start_time, end_time: poss_block.end_time)

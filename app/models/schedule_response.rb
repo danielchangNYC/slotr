@@ -2,7 +2,7 @@ class ScheduleResponse < ActiveRecord::Base
   belongs_to :interview
   belongs_to :user
 
-  before_save :generate_code
+  before_create :generate_code
 
   private
     def generate_code
