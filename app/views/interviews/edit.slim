@@ -12,6 +12,6 @@
 
     / TEMP put hidden fields in separate iteration. it is breaking slip.js when in the ul container
     - @date_recommendations.each_with_index do |date, i|
-      = hidden_field_tag "preferred_blocks[]".to_sym, date.id, id: "date#{i+1}"
+      = hidden_field_tag "rankings[]".to_sym, date.id, id: "date#{i+1}"
     .btm-button
       = submit_tag "Continue to Email", class: 'button success expand'

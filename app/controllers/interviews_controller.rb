@@ -27,11 +27,14 @@ class InterviewsController < ApplicationController
 
   def update
     @interview = Interview.find(params[:id])
-    rankings = params[:preferred_blocks].map(&:to_i)
 
+    # rankings = possible_interview_block_ids in ranked order, ex: [112, 105, 187]
+    rankings = params[:rankings].map(&:to_i)
+
+    scheduler = @interview.scheduler
     ActiveRecord::Base.transaction do
-      @interview.clear_rankings
-      @interview.update_ranks!(rankings)
+      scheduler.clear_rankings
+      scheduler.update_ranks!(rankings)
     end
     redirect_to interview_new_schedule_responses_path @interview
   end
