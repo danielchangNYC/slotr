@@ -15,6 +15,10 @@ class Interview < ActiveRecord::Base
     begins_at.nil?
   end
 
+  def awaiting_response?
+    pending_responses.any?
+  end
+
   def pending_responses
     schedule_responses.where(responded_on: nil)
   end

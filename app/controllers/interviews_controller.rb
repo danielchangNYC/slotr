@@ -33,7 +33,27 @@ class InterviewsController < ApplicationController
       @interview.clear_rankings
       @interview.update_ranks!(rankings)
     end
-    redirect_to root_path
+    redirect_to interview_new_schedule_responses_path @interview
+  end
+
+  def new_schedule_responses
+    @interview = Interview.find(params[:interview_id])
+    @interviewee = @interview.interviewee
+    @interviewers = @interview.interviewers
+  end
+
+  def create_schedule_responses
+    @interview = Interview.find(params[:interview_id])
+    @interviewers = @interview.interviewers
+    @interviewee = @interview.interviewee
+
+    if !@interview.awaiting_response?
+      create_responses
+      send_emails
+      flash[:success] = "Emails sent!"
+    end
+
+    redirect_to interviews_path
   end
 
   private
@@ -49,9 +69,19 @@ class InterviewsController < ApplicationController
     end
     interviewee
   end
-end
 
-# IF USER DELETES A RECOMMENDED SCHEDULE BLOCK
-  # Add to interview_rejected_blocks
-  # Remove from possible_interview_blocks
-  # Recommend the next one.
+  def create_responses
+    @interviewer_schedule_responses = @interviewers.each do |interviewer|
+      @interview.schedule_responses.create(user: interviewer)
+    end
+    @interviewee_schedule_response = @interview.schedule_responses.create(user: @interviewee)
+  end
+
+  def send_emails
+    @interviewer_schedule_responses.each do |response|
+      ScheduleResponseMailer.send_interviewer_template(response).deliver
+    end
+    ScheduleResponseMailer.send_interviewee_template(@interviewee_schedule_response).deliver
+    ScheduleResponseMailer.send_scheduler_confirm(@interview).deliver
+  end
+end
