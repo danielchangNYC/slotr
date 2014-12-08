@@ -44,21 +44,15 @@ class InterviewsController < ApplicationController
 
   def create_schedule_responses
     @interview = Interview.find(params[:interview_id])
-    interviewers = @interview.interviewers
-    interviewee = @interview.interviewee
+    @interviewers = @interview.interviewers
+    @interviewee = @interview.interviewee
 
-    @interviewer_schedule_responses = interviewers.each do |interviewer|
-      @interview.schedule_responses.create(user: interviewer)
+    if !@interview.awaiting_response?
+      create_responses
+      send_emails
+      flash[:success] = "Emails sent!"
     end
 
-    @interviewee_schedule_response = @interview.schedule_responses.create(user: interviewee)
-
-    @interviewer_schedule_responses.each do |response|
-      ScheduleResponseMailer.send_interviewer_template(response)
-    end
-    ScheduleResponseMailer.send_interviewee_template(@interviewee_schedule_response)
-    ScheduleResponseMailer.send_scheduler_confirm(@interview)
-    flash[:success] = "Emails sent!"
     redirect_to interviews_path
   end
 
@@ -74,5 +68,20 @@ class InterviewsController < ApplicationController
       interviewee = User.create!(email: interview_params[:interviewee][:email], password: "password", first_name: interview_params[:interviewee][:first_name], last_name: interview_params[:interviewee][:last_name])
     end
     interviewee
+  end
+
+  def create_responses
+    @interviewer_schedule_responses = @interviewers.each do |interviewer|
+      @interview.schedule_responses.create(user: interviewer)
+    end
+    @interviewee_schedule_response = @interview.schedule_responses.create(user: @interviewee)
+  end
+
+  def send_emails
+    @interviewer_schedule_responses.each do |response|
+      ScheduleResponseMailer.send_interviewer_template(response).deliver
+    end
+    ScheduleResponseMailer.send_interviewee_template(@interviewee_schedule_response).deliver
+    ScheduleResponseMailer.send_scheduler_confirm(@interview).deliver
   end
 end

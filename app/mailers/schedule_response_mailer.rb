@@ -5,7 +5,7 @@ class ScheduleResponseMailer < ActionMailer::Base
     interviewer = interviewer_schedule_response.user
     interview = interviewer_schedule_response.interview
     @name = interviewer.full_name
-    @code = interviewer_schedule_response.code
+    @code_url = create_url(interviewer_schedule_response.code)
     @scheduler_name = interview.scheduler.full_name
     @interviewee_name = interview.interviewee.full_name
 
@@ -18,7 +18,7 @@ class ScheduleResponseMailer < ActionMailer::Base
   def send_interviewee_template(interviewee_schedule_response)
     interview = interviewee_schedule_response.interview
     @name = interviewee_schedule_response.user.full_name
-    @code = interviewee_schedule_response.code
+    @code_url = create_url(interviewee_schedule_response.code)
     @scheduler_name = interview.scheduler.full_name
 
     mail(
@@ -36,5 +36,10 @@ class ScheduleResponseMailer < ActionMailer::Base
       to: interview.scheduler.email,
       subject: "Emails sent successfully for interview with #{@interviewee.full_name}"
     )
+  end
+
+  private
+  def create_url(code)
+    "#{Rails.application.secrets.DOMAIN_URL}/#{schedule_response_path(code)}"
   end
 end
