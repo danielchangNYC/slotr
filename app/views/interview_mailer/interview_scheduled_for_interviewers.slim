@@ -1,0 +1,10 @@
+p Greetings!
+p
+  | This is a confirmation that you are scheduled to interview #{@interviewee_name} on #{@begins_at} until #{@ends_at}. The participants of this interview will be:
+ul
+- @interviewers.each do |interviewer|
+  li = interviewer
+p We look forward to seeing you!
+p
+  | Regards,
+  | #{@scheduler_name}

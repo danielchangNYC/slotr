@@ -31,7 +31,7 @@ class InterviewsController < ApplicationController
     @original_blocks = params[:original].map(&:to_i)
     scheduler = @interview.scheduler
     if blocks_deleted? && @interview.schedule_responses.present?
-      @interview.remove_blocks_ranked_zero
+      @interview.remove_blocks_ranked_zero!
       send_update_emails(@interview)
       @interview.update_rankings_and_responses!(@rankings)
       flash[:success] = "Updated interview and emailed participants."
