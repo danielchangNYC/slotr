@@ -1,6 +1,6 @@
 - if @interviews.present?
   .page-title-container
-    h2.page-title Pending Interviews
+    h2.page-title All Interviews
   - @interviews.each do |interview|
     = link_to edit_interview_path(interview), class: "interview-list-item-link" do
       .row.interview-list-item
