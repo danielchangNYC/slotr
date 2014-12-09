@@ -1,0 +1,8 @@
+p Dear #{@name},
+p
+  | This is a confirmation that you are scheduled for an interview with the following participants on #{@begins_at} until #{@ends_at}:
+ul
+  li Interviewee: #{@interviewee_name}
+- @interviewers.each do |interviewer|
+  li = interviewer
+p A confirmation was sent to everyone above.

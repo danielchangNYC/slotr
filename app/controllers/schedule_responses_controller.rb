@@ -28,7 +28,9 @@ class ScheduleResponsesController < ApplicationController
       schedule_response.save!
     end
 
-    # TODO if interview.awaiting_response? ===> do nothing. Else, tally up scores and set interview
+    if interview.all_responded?
+      interview.tally_scores_and_send_email!
+    end
     flash[:success] = "Thank you! Your entry was processed."
     redirect_to root_path
   end

@@ -18,12 +18,32 @@ class Interview < ActiveRecord::Base
     begins_at.nil?
   end
 
+  def all_responded?
+    schedule_responses.present? && schedule_responses.where(responded_on: nil).empty?
+  end
+
   def awaiting_response?
     pending_responses.any?
   end
 
   def pending_responses
     schedule_responses.where(responded_on: nil)
+  end
+
+  def tally_scores_and_send_email!
+    # add up ranks for
+    remove_blocks_ranked_zero!
+    block_with_ranks = rankings.group_by(&:possible_interview_block_id)
+    block_total = block_with_ranks.count
+    block_with_ranks.each do |b_id, rankings|
+      block_with_ranks[b_id] = rankings.map(&:rank).inject(0) {|total, rank|  total + (block_total - rank) }
+    end
+    preferred_block_id = block_with_ranks.max_by{|b_id,score| score}.first
+    preferred_block = PossibleInterviewBlock.find(preferred_block_id)
+    self.begins_at = preferred_block.start_time
+    self.ends_at = preferred_block.end_time
+    self.save!
+    send_interview_scheduled_emails
   end
 
   def get_three_possible_blocks
@@ -46,7 +66,7 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def remove_blocks_ranked_zero
+  def remove_blocks_ranked_zero!
     # Remove any possible blocks where its rank is zero (user rejected it)
     if participant_ids
       ActiveRecord::Base.transaction do
@@ -71,5 +91,11 @@ class Interview < ActiveRecord::Base
   def reject_block!(poss_block)
     rejected_interview_blocks.create!(start_time: poss_block.start_time, end_time: poss_block.end_time)
     poss_block.destroy!
+  end
+
+  def send_interview_scheduled_emails
+    InterviewMailer.interview_scheduled_for_interviewee(self).deliver
+    InterviewMailer.interview_scheduled_for_interviewers(self).deliver
+    InterviewMailer.interview_scheduled_for_scheduler(self).deliver
   end
 end
