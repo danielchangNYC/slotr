@@ -57,6 +57,8 @@ class InterviewsController < ApplicationController
       create_responses
       send_emails
       flash[:success] = "Emails sent!"
+    else
+      flash[:error] = "You have already sent an invitation for this interview."
     end
 
     redirect_to interviews_path
