@@ -27,18 +27,19 @@ class InterviewsController < ApplicationController
 
   def update
     @interview = Interview.find(params[:id])
-
-    # rankings = possible_interview_block_ids in ranked order, ex: [112, 105, 187]
-    rankings = params[:rankings].map(&:to_i)
-
+    @rankings = params[:rankings].map(&:to_i)
+    @original_blocks = params[:original].map(&:to_i)
     scheduler = @interview.scheduler
-    ActiveRecord::Base.transaction do
-      scheduler.clear_and_update_ranks!(rankings)
-
-      # TO DO: Send out a notification after resetting schedule_responses. Send same code; will give the three new dates.
-      @interview.reset_schedule_responses
+    if blocks_deleted? && @interview.schedule_responses.present?
+      @interview.remove_blocks_ranked_zero
+      send_update_emails(@interview)
+      @interview.update_rankings_and_responses!(@rankings)
+      flash[:success] = "Updated interview and emailed participants."
+      redirect_to root_path
+    else
+      @interview.update_rankings_and_responses!(@rankings)
+      redirect_to interview_new_schedule_responses_path @interview
     end
-    redirect_to interview_new_schedule_responses_path @interview
   end
 
   def new_schedule_responses
@@ -88,5 +89,17 @@ class InterviewsController < ApplicationController
     end
     ScheduleResponseMailer.send_interviewee_template(@interviewee_schedule_response).deliver
     ScheduleResponseMailer.send_scheduler_confirm(@interview).deliver
+  end
+
+  def send_update_emails(interview)
+    interview.interviewer_responses.each do |response|
+      ScheduleResponseMailer.send_interviewer_update_template(response).deliver
+    end
+    ScheduleResponseMailer.send_interviewee_update_template(interview.interviewee_response).deliver
+    ScheduleResponseMailer.send_scheduler_confirm(interview).deliver
+  end
+
+  def blocks_deleted?
+    @rankings & @original_blocks != @rankings
   end
 end
