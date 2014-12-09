@@ -10,6 +10,10 @@ class Interview < ActiveRecord::Base
   has_many :schedule_responses
   validates_presence_of :scheduler_id, :interviewee_id
 
+  def rankings
+    Ranking.where(user_id: participant_ids, possible_interview_block_id: possible_interview_blocks.pluck(:id))
+  end
+
   def pending?
     begins_at.nil?
   end
@@ -30,15 +34,42 @@ class Interview < ActiveRecord::Base
     possible_interview_blocks.order(start_time: :asc).third
   end
 
-  def reset_schedule_responses
+  def reset_schedule_response_statuses
     # Reset everytime a scheduler updates the possible dates so that if all responded_on are filled in, then all users have responded to the same 3 recommendations.
     schedule_responses.each {|r| r.responded_on = nil; r.save! } if schedule_responses.present?
   end
 
-  def reject_block!(poss_block)
+  def update_rankings_and_responses!(rankings)
     ActiveRecord::Base.transaction do
-      rejected_interview_blocks.create!(start_time: poss_block.start_time, end_time: poss_block.end_time)
-      poss_block.destroy!
+      scheduler.clear_and_update_ranks!(rankings)
+      reset_schedule_response_statuses
     end
+  end
+
+  def remove_blocks_ranked_zero
+    # Remove any possible blocks where its rank is zero (user rejected it)
+    if participant_ids
+      ActiveRecord::Base.transaction do
+        blocks_to_remove = PossibleInterviewBlock.joins(:rankings).where(rankings: {rank: 0, user_id: participant_ids})
+        blocks_to_remove.each { |poss_block| reject_block!(poss_block) }
+      end
+    end
+  end
+
+  def participant_ids
+    [scheduler.id, interviewee.id, interviewers.pluck(:id)].flatten.uniq
+  end
+
+  def interviewer_responses
+    schedule_responses.where(user_id: interviewers.pluck(:id))
+  end
+
+  def interviewee_response
+    schedule_responses.find_by(user_id: interviewee.id)
+  end
+
+  def reject_block!(poss_block)
+    rejected_interview_blocks.create!(start_time: poss_block.start_time, end_time: poss_block.end_time)
+    poss_block.destroy!
   end
 end
