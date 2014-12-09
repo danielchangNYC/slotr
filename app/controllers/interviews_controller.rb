@@ -18,8 +18,15 @@ class InterviewsController < ApplicationController
       scheduler_id: interview_params[:scheduler_id],
       interviewee_id: interviewee.id
       )
-    interview_params[:interviewers].each do |email|
-      @interview.interviewers.find_or_create_by(email: email)
+    firsts = interview_params[:first_names]
+    lasts = interview_params[:last_names]
+    interview_params[:interviewers].each_with_index do |email, i|
+      u = User.find_or_initialize_by(email: email)
+      u.first_name = firsts[i]
+      u.last_name = lasts[i]
+      u.password = "password" unless u.encrypted_password.present?
+      u.save!
+      InterviewInterviewer.find_or_create_by(interview: @interview, interviewer_id: u.id)
     end
 
     redirect_to edit_interview_path @interview
@@ -53,6 +60,8 @@ class InterviewsController < ApplicationController
     @interviewers = @interview.interviewers
     @interviewee = @interview.interviewee
 
+    # CASE: @interview.action_required? ===> flash error and redirect to edit_interviews_path
+    # action_required if anyone responses ranked full zeroes. turn interview.action_required? to true
     if !@interview.awaiting_response?
       create_responses
       send_emails
@@ -66,7 +75,7 @@ class InterviewsController < ApplicationController
 
   private
   def interview_params
-    params.require(:interview).permit(:scheduler_id, :interviewers => [], :interviewee => [:email, :first_name, :last_name])
+    params.require(:interview).permit(:scheduler_id, :first_names => [], :last_names => [], :interviewers => [], :interviewee => [:email, :first_name, :last_name])
   end
 
   def find_or_create_interviewee
@@ -79,7 +88,7 @@ class InterviewsController < ApplicationController
   end
 
   def create_responses
-    @interviewer_schedule_responses = @interviewers.each do |interviewer|
+    @interviewer_schedule_responses = @interviewers.map do |interviewer|
       @interview.schedule_responses.create(user: interviewer)
     end
     @interviewee_schedule_response = @interview.schedule_responses.create(user: @interviewee)

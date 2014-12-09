@@ -11,7 +11,7 @@ class ScheduleResponseMailer < ActionMailer::Base
 
     mail(
       to: interviewer.email,
-      subject: "Interview with #{@interviewee.full_name}"
+      subject: "Interview with #{@interviewee_name}"
     )
   end
 
@@ -25,7 +25,7 @@ class ScheduleResponseMailer < ActionMailer::Base
 
     mail(
       to: interviewer.email,
-      subject: "UPDATE REQUESTED: Interview with #{@interviewee.full_name}"
+      subject: "UPDATE REQUESTED: Interview with #{@interviewee_name}"
     )
   end
 

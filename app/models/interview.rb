@@ -1,5 +1,5 @@
 class Interview < ActiveRecord::Base
-  has_many :interview_interviewers
+  has_many :interview_interviewers, dependent: :destroy
   has_many :interviewers, through: :interview_interviewers, class_name: "User", foreign_key: "interviewer_id"
 
   has_many :rejected_interview_blocks, dependent: :destroy

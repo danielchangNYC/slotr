@@ -1,4 +1,6 @@
 class InterviewMailer < ActionMailer::Base
+  default from: Rails.application.secrets.MAILER_EMAIL
+
   def interview_scheduled_for_interviewee(interview)
     @name = interview.interviewee.full_name
     @scheduler_name = interview.scheduler.full_name
