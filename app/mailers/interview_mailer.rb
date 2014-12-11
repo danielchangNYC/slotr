@@ -1,6 +1,17 @@
 class InterviewMailer < ActionMailer::Base
   default from: Rails.application.secrets.MAILER_EMAIL
 
+  def send_scheduler_action_required(interview)
+    @name = interview.scheduler.full_name
+    @interview_update_url = create_url(interview.id)
+    @interviewee_name = interview.interviewee.full_name
+
+    mail(
+      to: interview.scheduler.email,
+      subject: "ACTION REQUIRED None of the times worked for a participant"
+    )
+  end
+
   def interview_scheduled_for_interviewee(interview)
     @name = interview.interviewee.full_name
     @scheduler_name = interview.scheduler.full_name
@@ -39,4 +50,9 @@ class InterviewMailer < ActionMailer::Base
       subject: "CONFIRMATION Interview scheduled with #{@interviewee_name}"
     )
   end
+
+  private
+    def create_url(interview_id)
+      "#{Rails.application.secrets.DOMAIN_URL}#{edit_interview_path(interview_id)}"
+    end
 end

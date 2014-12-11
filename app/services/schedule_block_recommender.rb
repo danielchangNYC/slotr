@@ -6,12 +6,12 @@ class ScheduleBlockRecommender
   INTERVIEW_DURATION = 30.minutes
   HOURS_TO_NEXT_DAY = 9.hours
 
-  def self.get_recommended_dates(user, interview)
-    new(user, interview).get_recommended_dates
+  def self.get_recommended_dates(interview)
+    new(interview).get_recommended_dates
   end
 
-  def initialize(user, interview)
-    @user = user
+  def initialize(interview)
+    @user = interview.scheduler
     @interview = interview
   end
 

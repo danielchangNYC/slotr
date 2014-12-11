@@ -13,7 +13,6 @@ class ScheduleResponsesController < ApplicationController
   end
 
   def update
-    # TODO if rankings.empty? ===> no times worked for user. Handle case.
     rankings                   = params[:rankings].uniq.map(&:to_i)
     rankings.delete(0)           # 0 represents the removed blocks
     schedule_response          = ScheduleResponse.find(params[:id])
@@ -28,10 +27,13 @@ class ScheduleResponsesController < ApplicationController
       schedule_response.save!
     end
 
-    if interview.all_responded?
+    if rankings.empty?
+      interview.send_scheduler_action_required_email
+      flash[:success] = "Thank you! The scheduler will email you back with more choices ASAP."
+    elsif interview.all_responded?
       interview.tally_scores_and_send_email!
+      flash[:success] = "Thank you! Your entry was processed."
     end
-    flash[:success] = "Thank you! Your entry was processed."
     redirect_to root_path
   end
 end
