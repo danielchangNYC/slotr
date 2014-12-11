@@ -20,7 +20,7 @@ class InterviewsController < ApplicationController
       )
     firsts = interview_params[:first_names]
     lasts = interview_params[:last_names]
-    interview_params[:interviewers].each_with_index do |email, i|
+    interview_params[:interviewers].reject(&:empty?).each_with_index do |email, i|
       u = User.find_or_initialize_by(email: email)
       u.first_name = firsts[i]
       u.last_name = lasts[i]
