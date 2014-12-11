@@ -9,7 +9,7 @@ class InterviewsController < ApplicationController
 
   def edit
     @interview = Interview.find(params[:id])
-    @date_recommendations = ScheduleBlockRecommender.get_recommended_dates(current_user, @interview)
+    @date_recommendations = @interview.recalculate_dates!
   end
 
   def create
@@ -39,7 +39,7 @@ class InterviewsController < ApplicationController
     scheduler = @interview.scheduler
     if blocks_deleted? && @interview.schedule_responses.present?
       @interview.remove_blocks_ranked_zero!
-      send_update_emails(@interview)
+      @interview.send_update_emails
       @interview.update_rankings_and_responses!(@rankings)
       flash[:success] = "Updated interview and emailed participants."
       redirect_to root_path
@@ -100,14 +100,6 @@ class InterviewsController < ApplicationController
     end
     ScheduleResponseMailer.send_interviewee_template(@interviewee_schedule_response).deliver
     ScheduleResponseMailer.send_scheduler_confirm(@interview).deliver
-  end
-
-  def send_update_emails(interview)
-    interview.interviewer_responses.each do |response|
-      ScheduleResponseMailer.send_interviewer_update_template(response).deliver
-    end
-    ScheduleResponseMailer.send_interviewee_update_template(interview.interviewee_response).deliver
-    ScheduleResponseMailer.send_scheduler_confirm(interview).deliver
   end
 
   def blocks_deleted?

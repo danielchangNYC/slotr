@@ -76,6 +76,10 @@ class Interview < ActiveRecord::Base
     end
   end
 
+  def remove_old_blocks
+    PossibleInterviewBlock.where("start_time < ?", Time.now).destroy_all
+  end
+
   def participant_ids
     [scheduler.id, interviewee.id, interviewers.pluck(:id)].flatten.uniq
   end
@@ -93,9 +97,29 @@ class Interview < ActiveRecord::Base
     poss_block.destroy!
   end
 
+  def recalculate_dates!
+    if possible_interview_blocks.any?
+      remove_blocks_ranked_zero!
+      remove_old_blocks
+    end
+    ScheduleBlockRecommender.get_recommended_dates(self)
+  end
+
   def send_interview_scheduled_emails
     InterviewMailer.interview_scheduled_for_interviewee(self).deliver
     InterviewMailer.interview_scheduled_for_interviewers(self).deliver
     InterviewMailer.interview_scheduled_for_scheduler(self).deliver
+  end
+
+  def send_update_emails
+    interviewer_responses.each do |response|
+      ScheduleResponseMailer.send_interviewer_update_template(response).deliver
+    end
+    ScheduleResponseMailer.send_interviewee_update_template(interviewee_response).deliver
+    ScheduleResponseMailer.send_scheduler_confirm(self).deliver
+  end
+
+  def send_scheduler_action_required_email
+    InterviewMailer.send_scheduler_action_required(self).deliver
   end
 end
