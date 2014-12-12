@@ -1,4 +1,22 @@
+.cover {
+  min-height: 300px;
+  background-color: $slotr-blue;
+}
+
+.phone-img-container {
+  padding: 28px 0;
+  text-align: center;
+
+  img {
+    max-height: 250px;
+  }
+}
+
+.info-container {
+  margin-top: 50px;
+}
+
 .login-button-container {
   text-align: center;
-  margin-top: 140px;
+  margin-top: 30px;
 }

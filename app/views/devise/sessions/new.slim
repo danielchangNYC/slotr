@@ -1,4 +1,20 @@
-.page-title-container.bg-white
-  h2.page-title Slotr
+= render partial: "shared/nav"
+.cover
+  .row
+    .small-9.medium-8.columns
+      .info-container
+        h2.app-name Slotr
+        p.tagline.lato A personal secretary for scheduling and coordinating interviews.
+        form
+          .row
+            .large-12.columns
+              .row.collapse
+                .small-10.columns
+                  input type="text" placeholder="Email"
+                .small-2.columns
+                  = link_to "Request Info", "#", class: "button postfix info"
+    .small-3.medium-4.columns
+      .phone-img-container
+        = image_tag "phone.svg"
 .login-button-container
   = render "devise/shared/links"

@@ -1,0 +1,14 @@
+nav.top-bar data-topbar="" role="navigation"
+  ul.title-area
+    li.name
+      h1
+        a href="/" Slotr
+    li.toggle-topbar menu-icon=""
+      - resource_class.omniauth_providers.each do |provider|
+        = link_to "Login", omniauth_authorize_path(resource_name, provider), class: "button"
+
+  section.top-bar-section
+    ul.right
+      li
+        - resource_class.omniauth_providers.each do |provider|
+          = link_to "Login", omniauth_authorize_path(resource_name, provider), class: "button"
